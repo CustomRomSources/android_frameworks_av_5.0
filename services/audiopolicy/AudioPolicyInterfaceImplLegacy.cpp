@@ -472,6 +472,12 @@ status_t AudioPolicyService::queryDefaultPreProcessing(int audioSession,
     return audioPolicyEffects->queryDefaultInputEffects(audioSession, descriptors, count);
 }
 
+#ifdef STE_AUDIO
+bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
+{
+    return false;
+}
+#else
 bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
 {
     if (mpAudioPolicy == NULL) {
@@ -486,6 +492,7 @@ bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
 
     return mpAudioPolicy->is_offload_supported(mpAudioPolicy, &info);
 }
+#endif
 
 status_t AudioPolicyService::listAudioPorts(audio_port_role_t role __unused,
                                             audio_port_type_t type __unused,
